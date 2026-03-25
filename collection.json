@@ -17,20 +17,40 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "\r",
                   "var res = pm.response.json();\r",
                   "\r",
-                  "\r",
-                  "pm.environment.set(\"accessToken\", res.accessToken);\r",
-                  "pm.environment.set(\"validUserId\", res.id);\r",
-                  "\r",
-                  "pm.test(\"Login successful - id exists\", function () {\r",
-                  "    pm.expect(res.id).to.exist;\r",
+                  "pm.test(\"Status code is valid\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
                   "});\r",
                   "\r",
-                  "pm.test(\"Access token exists\", function () {\r",
-                  "    pm.expect(res.accessToken).to.exist;\r",
-                  "});"
+                  "pm.test(\"Response time < 2000ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "if (pm.response.code === 200) {\r",
+                  "\r",
+                  "\r",
+                  "    pm.environment.set(\"accessToken\", res.accessToken);\r",
+                  "    pm.environment.set(\"validUserId\", res.id);\r",
+                  "\r",
+                  "    \r",
+                  "    pm.test(\"Login successful - id exists\", function () {\r",
+                  "        pm.expect(res.id).to.exist;\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"Access token exists\", function () {\r",
+                  "        pm.expect(res.accessToken).to.exist;\r",
+                  "    });\r",
+                  "\r",
+                  "} else {\r",
+                  "\r",
+                  "    \r",
+                  "    pm.test(\"Login failed as expected\", function () {\r",
+                  "        pm.expect(pm.response.code).to.eql(400);\r",
+                  "    });\r",
+                  "\r",
+                  "}"
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -40,8 +60,12 @@
             {
               "listen": "prerequest",
               "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
                 "packages": {},
-                "type": "text/javascript"
+                "requests": {}
               }
             }
           ],
