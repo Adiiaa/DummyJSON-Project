@@ -403,7 +403,6 @@
         "requests": {},
         "exec": [
           "\r",
-          "// STATUS CODE (allow success + negative test)\r",
           "pm.test(\"Status code is valid\", function () {\r",
           "    pm.expect(pm.response.code).to.be.oneOf([200, 201,400, 404]);\r",
           "});\r",
@@ -413,7 +412,7 @@
           "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
           "});\r",
           "\r",
-          "// Helper function\r",
+          "\r",
           "function getJson() {\r",
           "    try {\r",
           "        return pm.response.json();\r",
